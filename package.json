@@ -9,8 +9,10 @@
     "build": "nest build",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "start": "concurrently -c auto \"pnpm start:api-gateway\" \"pnpm start:auth-service\" \"pnpm start:user-service\"",
     "start:api-gateway": "nest start api-gateway --watch",
-    "start:user-service": "nest start user-service --watch"
+    "start:auth-service": "nest start user-service --watch",
+    "start:user-service": "nest start auth-service --watch"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -33,6 +35,7 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^24.0.0",
     "@types/supertest": "^7.0.0",
+    "concurrently": "^10.0.3",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.2",

@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { ApiGatewayController } from './api-gateway.controller';
-import { ApiGatewayService } from './api-gateway.service';
 import { ApiGatewayUserController } from './api-gateway-user.controller';
 import { ClientsModule } from '@nestjs/microservices';
 import { ConfigModule } from '@nestjs/config';
@@ -24,7 +22,7 @@ import { createKafkaClientOptions } from '@libs/common';
       },
     ]),
   ],
-  controllers: [ApiGatewayController, ApiGatewayUserController],
-  providers: [ApiGatewayService],
+  controllers: [ApiGatewayUserController],
+  providers: [],
 })
 export class ApiGatewayModule {}
