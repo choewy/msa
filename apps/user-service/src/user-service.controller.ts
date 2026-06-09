@@ -3,7 +3,7 @@ import { MessagePattern } from '@nestjs/microservices';
 
 @Controller()
 export class UserServiceController {
-  @MessagePattern('get-users')
+  @MessagePattern('user.list')
   getUsers() {
     return [
       {

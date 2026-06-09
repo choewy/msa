@@ -18,6 +18,6 @@ export class AuthServiceModule implements OnModuleInit {
       brokers: ['localhost:9092'],
     });
 
-    await createTopics(kafka, ['login', 'register']);
+    await createTopics(kafka, ['auth.login', 'auth.register']);
   }
 }

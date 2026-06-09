@@ -3,12 +3,12 @@ import { MessagePattern } from '@nestjs/microservices';
 
 @Controller()
 export class AuthServiceController {
-  @MessagePattern('login')
+  @MessagePattern('auth.login')
   login() {
     return;
   }
 
-  @MessagePattern('register')
+  @MessagePattern('auth.register')
   register() {
     return;
   }

@@ -3,6 +3,7 @@ import { ApiGatewayUserController } from './api-gateway-user.controller';
 import { ClientsModule } from '@nestjs/microservices';
 import { ConfigModule } from '@nestjs/config';
 import { createKafkaClientOptions } from '@libs/common';
+import { ApiGatewayAuthController } from './api-gateway-auth.controller';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { createKafkaClientOptions } from '@libs/common';
     }),
     ClientsModule.registerAsync([
       {
-        name: 'USER_SERVICE',
+        name: 'KAFKA_SERVICE',
         useFactory() {
           return createKafkaClientOptions(
             'api-gateway',
@@ -22,7 +23,7 @@ import { createKafkaClientOptions } from '@libs/common';
       },
     ]),
   ],
-  controllers: [ApiGatewayUserController],
+  controllers: [ApiGatewayAuthController, ApiGatewayUserController],
   providers: [],
 })
 export class ApiGatewayModule {}

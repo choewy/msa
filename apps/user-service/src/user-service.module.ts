@@ -20,6 +20,6 @@ export class UserServiceModule implements OnModuleInit {
       brokers: ['localhost:9092'],
     });
 
-    await createTopics(kafka, ['get-users']);
+    await createTopics(kafka, ['user.list']);
   }
 }

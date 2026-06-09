@@ -5,16 +5,16 @@ import { ClientKafka } from '@nestjs/microservices';
 @Controller('users')
 export class ApiGatewayUserController implements OnModuleInit {
   constructor(
-    @Inject('USER_SERVICE')
+    @Inject('KAFKA_SERVICE')
     private readonly client: ClientKafka,
   ) {}
 
   async onModuleInit() {
-    await subscribeToResponseOf(this.client, ['get-users']);
+    await subscribeToResponseOf(this.client, ['user.list']);
   }
 
   @Get()
-  getUsers() {
-    return this.client.send('get-users', {});
+  getUserList() {
+    return this.client.send('user.list', {});
   }
 }
