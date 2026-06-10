@@ -1,3 +1,6 @@
 export const UserTopic = {
-  Create: 'user.create',
+  Get: 'user.get',
+  List: 'user.list',
+  AuthCreated: 'user.auth-created',
+  Update: 'user.update',
 } as const;
