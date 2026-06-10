@@ -20,5 +20,6 @@ export function createTypeOrmOptions(configService: ConfigService, serviceName: 
     logging: isLocal ? true : ['error', 'warn'],
     autoLoadEntities: true,
     migrations: [resolve(DIST_APP_ROOT, `apps/${serviceName}**/*-migration.{js,ts}`)],
+    synchronize: true,
   };
 }

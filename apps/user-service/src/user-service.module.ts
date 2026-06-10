@@ -1,9 +1,10 @@
 import { Module, OnModuleInit } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { Kafka } from 'kafkajs';
 
-import { createTopics, UserTopic } from '@libs/common';
+import { createTopics, createTypeOrmOptions, UserTopic } from '@libs/common';
 
 import { UserModule } from './user/user.module';
 
@@ -12,6 +13,12 @@ import { UserModule } from './user/user.module';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['apps/user-service/.env', 'apps/user-service/.env.local'],
+    }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory(configService: ConfigService) {
+        return createTypeOrmOptions(configService, 'user-service');
+      },
     }),
     UserModule,
   ],

@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 
-import { AuthLoginRequest, AuthRegisterRequest, AuthTopic } from '@libs/common';
+import { AuthLoginRequest, AuthLogoutRequest, AuthRefreshRequest, AuthRegisterRequest, AuthTopic } from '@libs/common';
 
 import { AuthService } from './auth.service';
 
@@ -17,5 +17,15 @@ export class AuthController {
   @MessagePattern(AuthTopic.Register)
   register(@Payload() payload: AuthRegisterRequest) {
     return this.authService.register(payload);
+  }
+
+  @MessagePattern(AuthTopic.Refresh)
+  refresh(@Payload() payload: AuthRefreshRequest) {
+    return this.authService.refresh(payload);
+  }
+
+  @MessagePattern(AuthTopic.Logout)
+  logout(@Payload() payload: AuthLogoutRequest) {
+    return this.authService.logout(payload);
   }
 }

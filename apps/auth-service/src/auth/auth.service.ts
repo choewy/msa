@@ -1,6 +1,7 @@
-import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { RpcException } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { compare, hash } from 'bcrypt';
@@ -28,7 +29,7 @@ export class AuthService {
     });
 
     if (exists) {
-      throw new ConflictException('이미 가입된 이메일입니다.');
+      throw new RpcException('이미 가입된 이메일입니다.');
     }
 
     const passwordHash = await hash(req.password, 12);
@@ -52,13 +53,13 @@ export class AuthService {
     });
 
     if (!authUser) {
-      throw new UnauthorizedException('이메일 또는 비밀번호가 올바르지 않습니다.');
+      throw new RpcException('이메일 또는 비밀번호가 올바르지 않습니다.');
     }
 
     const isPasswordValid = await compare(req.password, authUser.passwordHash);
 
     if (!isPasswordValid) {
-      throw new UnauthorizedException('이메일 또는 비밀번호가 올바르지 않습니다.');
+      throw new RpcException('이메일 또는 비밀번호가 올바르지 않습니다.');
     }
 
     return this.createSessionAndIssueTokens(authUser, {
@@ -75,7 +76,7 @@ export class AuthService {
         secret: this.configService.getOrThrow<string>('JWT_REFRESH_SECRET'),
       });
     } catch {
-      throw new UnauthorizedException('refresh token이 유효하지 않습니다.');
+      throw new RpcException('refresh token이 유효하지 않습니다.');
     }
 
     const session = await this.authSessionRepository.findOne({
@@ -84,21 +85,21 @@ export class AuthService {
     });
 
     if (!session) {
-      throw new UnauthorizedException('세션을 찾을 수 없습니다.');
+      throw new RpcException('세션을 찾을 수 없습니다.');
     }
 
     if (session.revokedAt) {
-      throw new UnauthorizedException('폐기된 세션입니다.');
+      throw new RpcException('폐기된 세션입니다.');
     }
 
     if (session.expiresAt.getTime() < Date.now()) {
-      throw new UnauthorizedException('만료된 세션입니다.');
+      throw new RpcException('만료된 세션입니다.');
     }
 
     const isRefreshTokenValid = await compare(req.refreshToken, session.refreshTokenHash);
 
     if (!isRefreshTokenValid) {
-      throw new UnauthorizedException('refresh token이 일치하지 않습니다.');
+      throw new RpcException('refresh token이 일치하지 않습니다.');
     }
 
     return this.rotateRefreshToken(session);
