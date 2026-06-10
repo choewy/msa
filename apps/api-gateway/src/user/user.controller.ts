@@ -1,7 +1,8 @@
-import { subscribeToResponseOf, UserTopic } from '@libs/common';
 import { Controller, Inject, OnModuleInit } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { ApiTags } from '@nestjs/swagger';
+
+import { subscribeToResponseOf, UserTopic } from '@libs/common';
 
 @ApiTags('사용자')
 @Controller('users')

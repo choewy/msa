@@ -1,9 +1,6 @@
 import { ClientOptions, Transport } from '@nestjs/microservices';
 
-export const createKafkaClientOptions = (
-  clientId: string,
-  groupId: string,
-): ClientOptions => {
+export const createKafkaClientOptions = (clientId: string, groupId: string): ClientOptions => {
   const brokers = process.env.KAFKA_BROKERS?.split(',') ?? [];
 
   return {

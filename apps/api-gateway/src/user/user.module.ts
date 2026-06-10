@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
-import { UserController } from './user.controller';
 import { ClientsModule } from '@nestjs/microservices';
+
 import { createKafkaClientOptions } from '@libs/common';
+
+import { UserController } from './user.controller';
 
 @Module({
   imports: [

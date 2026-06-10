@@ -1,7 +1,10 @@
 import { Module, OnModuleInit } from '@nestjs/common';
-import { Kafka } from 'kafkajs';
-import { createTopics, UserTopic } from '@libs/common';
 import { ConfigModule } from '@nestjs/config';
+
+import { Kafka } from 'kafkajs';
+
+import { createTopics, UserTopic } from '@libs/common';
+
 import { UserModule } from './user/user.module';
 
 @Module({

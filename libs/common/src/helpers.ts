@@ -1,10 +1,8 @@
 import { ClientKafka } from '@nestjs/microservices';
+
 import { Kafka } from 'kafkajs';
 
-export async function subscribeToResponseOf(
-  client: ClientKafka,
-  patterns: string[],
-) {
+export async function subscribeToResponseOf(client: ClientKafka, patterns: string[]) {
   for (const pattern of patterns) {
     client.subscribeToResponseOf(pattern);
   }

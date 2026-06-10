@@ -1,7 +1,8 @@
-import { AuthTopic, subscribeToResponseOf } from '@libs/common';
 import { Controller, Inject, OnModuleInit, Post } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { ApiTags } from '@nestjs/swagger';
+
+import { AuthTopic, subscribeToResponseOf } from '@libs/common';
 
 @ApiTags('인증')
 @Controller('auth')

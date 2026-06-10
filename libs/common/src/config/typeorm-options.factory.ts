@@ -1,13 +1,12 @@
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+
 import { resolve } from 'path';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+
 import { DIST_APP_ROOT } from '../constants';
 
-export function createTypeOrmOptions(
-  configService: ConfigService,
-  serviceName: string,
-): TypeOrmModuleOptions {
+export function createTypeOrmOptions(configService: ConfigService, serviceName: string): TypeOrmModuleOptions {
   const isLocal = configService.get<string>('NODE_ENV') === 'local';
 
   return {
@@ -20,8 +19,6 @@ export function createTypeOrmOptions(
     namingStrategy: new SnakeNamingStrategy(),
     logging: isLocal ? true : ['error', 'warn'],
     autoLoadEntities: true,
-    migrations: [
-      resolve(DIST_APP_ROOT, `apps/${serviceName}**/*-migration.{js,ts}`),
-    ],
+    migrations: [resolve(DIST_APP_ROOT, `apps/${serviceName}**/*-migration.{js,ts}`)],
   };
 }

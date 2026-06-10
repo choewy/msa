@@ -1,4 +1,5 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+
 import { AuthUserEntity } from './auth-user.entity';
 
 @Entity({ name: 'auth_sessions' })

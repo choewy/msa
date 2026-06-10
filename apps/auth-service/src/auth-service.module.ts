@@ -1,8 +1,11 @@
-import { AuthTopic, createTopics, createTypeOrmOptions } from '@libs/common';
 import { Module, OnModuleInit } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { Kafka } from 'kafkajs';
+
+import { AuthTopic, createTopics, createTypeOrmOptions } from '@libs/common';
+
 import { AuthModule } from './auth/auth.module';
 
 @Module({

@@ -1,5 +1,6 @@
-import { AuthUserStatus } from '@libs/common';
 import { Column, CreateDateColumn, Entity, Index, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+
+import { AuthUserStatus } from '@libs/common';
 
 @Entity({ name: 'auth_users' })
 @Index('auth_users_email_UK', ['email'])
