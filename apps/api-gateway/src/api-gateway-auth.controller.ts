@@ -1,4 +1,4 @@
-import { subscribeToResponseOf } from '@libs/common';
+import { AuthTopic, subscribeToResponseOf } from '@libs/common';
 import { Controller, Inject, OnModuleInit, Post } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 
@@ -10,16 +10,16 @@ export class ApiGatewayAuthController implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    await subscribeToResponseOf(this.client, ['auth.login', 'auth.register']);
+    await subscribeToResponseOf(this.client, Object.values(AuthTopic));
   }
 
   @Post('login')
   login() {
-    return this.client.send('auth.login', {});
+    return this.client.send(AuthTopic.Login, {});
   }
 
   @Post('register')
   register() {
-    return this.client.send('auth.register', {});
+    return this.client.send(AuthTopic.Register, {});
   }
 }

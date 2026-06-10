@@ -1,14 +1,23 @@
-import { createTopics } from '@libs/common';
+import { AuthTopic, createTopics, createTypeOrmOptions } from '@libs/common';
 import { Module, OnModuleInit } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { Kafka } from 'kafkajs';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['apps/auth-service/.env', 'apps/auth-service/.env.local'],
+      envFilePath: ['apps/auth-service/.env.local', 'apps/auth-service/.env'],
     }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory(configService: ConfigService) {
+        return createTypeOrmOptions(configService, 'auth-service');
+      },
+    }),
+    AuthModule,
   ],
 })
 export class AuthServiceModule implements OnModuleInit {
@@ -18,6 +27,6 @@ export class AuthServiceModule implements OnModuleInit {
       brokers: ['localhost:9092'],
     });
 
-    await createTopics(kafka, ['auth.login', 'auth.register']);
+    await createTopics(kafka, Object.values(AuthTopic));
   }
 }

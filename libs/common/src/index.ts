@@ -1,3 +1,3 @@
-export * from './enums';
 export * from './helpers';
+export * from './topics';
 export * from './config';

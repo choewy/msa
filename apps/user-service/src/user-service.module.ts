@@ -1,8 +1,8 @@
 import { Module, OnModuleInit } from '@nestjs/common';
-import { UserServiceController } from './user-service.controller';
 import { Kafka } from 'kafkajs';
-import { createTopics } from '@libs/common';
+import { createTopics, UserTopic } from '@libs/common';
 import { ConfigModule } from '@nestjs/config';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -10,8 +10,8 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
       envFilePath: ['apps/user-service/.env', 'apps/user-service/.env.local'],
     }),
+    UserModule,
   ],
-  controllers: [UserServiceController],
 })
 export class UserServiceModule implements OnModuleInit {
   async onModuleInit() {
@@ -20,6 +20,6 @@ export class UserServiceModule implements OnModuleInit {
       brokers: ['localhost:9092'],
     });
 
-    await createTopics(kafka, ['user.list']);
+    await createTopics(kafka, Object.values(UserTopic));
   }
 }
