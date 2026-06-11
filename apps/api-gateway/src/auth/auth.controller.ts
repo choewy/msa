@@ -1,11 +1,11 @@
-import { Body, Controller, Delete, Inject, OnModuleDestroy, OnModuleInit, Post, Req, Res } from '@nestjs/common';
-import { ClientKafka } from '@nestjs/microservices';
+import { Body, Controller, Delete, Inject, Post, Req, Res } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 import { ApiCreatedResponse, ApiNoContentResponse, ApiTags } from '@nestjs/swagger';
 
 import { Request, Response } from 'express';
 import { firstValueFrom } from 'rxjs';
 
-import { AuthTokenResponse, AuthTopic, getRequestInfo, subscribeToResponseOf } from '@libs/common';
+import { AuthTokenResponse, AuthTopic, getRequestInfo } from '@libs/common';
 
 import { LoginRequestDTO } from './dto/login.dto';
 import { RegisterRequestDTO } from './dto/register.dto';
@@ -13,19 +13,11 @@ import { AuthTokenResponseDTO } from './dto/token.dto';
 
 @ApiTags('인증')
 @Controller('auth')
-export class AuthController implements OnModuleInit, OnModuleDestroy {
+export class AuthController {
   constructor(
-    @Inject('KAFKA_SERVICE')
-    private readonly client: ClientKafka,
+    @Inject('AUTH_CLIENT')
+    private readonly client: ClientProxy,
   ) {}
-
-  async onModuleInit() {
-    await subscribeToResponseOf(this.client, Object.values(AuthTopic));
-  }
-
-  async onModuleDestroy() {
-    await this.client.close();
-  }
 
   @Post('login')
   @ApiCreatedResponse({ type: AuthTokenResponseDTO })

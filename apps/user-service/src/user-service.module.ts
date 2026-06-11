@@ -1,10 +1,8 @@
-import { Module, OnModuleInit } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { Kafka } from 'kafkajs';
-
-import { createTopics, createTypeOrmOptions, UserTopic } from '@libs/common';
+import { createTypeOrmOptions } from '@libs/common';
 
 import { UserModule } from './user/user.module';
 
@@ -23,13 +21,4 @@ import { UserModule } from './user/user.module';
     UserModule,
   ],
 })
-export class UserServiceModule implements OnModuleInit {
-  async onModuleInit() {
-    const kafka = new Kafka({
-      clientId: 'user-service-admin',
-      brokers: ['localhost:9092'],
-    });
-
-    await createTopics(kafka, Object.values(UserTopic));
-  }
-}
+export class UserServiceModule {}

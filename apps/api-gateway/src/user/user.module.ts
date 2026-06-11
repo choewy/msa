@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { ClientsModule } from '@nestjs/microservices';
 
-import { createKafkaClientOptions } from '@libs/common';
+import { createTcpClientOptions } from '@libs/common';
 
 import { UserController } from './user.controller';
 
@@ -9,9 +10,13 @@ import { UserController } from './user.controller';
   imports: [
     ClientsModule.registerAsync([
       {
-        name: 'KAFKA_SERVICE',
-        useFactory() {
-          return createKafkaClientOptions('api-user-gateway', 'api-user-gateway-consumer');
+        name: 'USER_CLIENT',
+        inject: [ConfigService],
+        useFactory(configService: ConfigService) {
+          const host = configService.getOrThrow<string>('USER_SERVICE_HOST');
+          const port = +configService.getOrThrow<string>('USER_SERVICE_PORT');
+
+          return createTcpClientOptions(host, port);
         },
       },
     ]),
